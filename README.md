@@ -16,12 +16,12 @@ does on iOS 26.
 | :---: | :---: |
 | <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/screenshot.png" width="380"> | <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/demo.webp" width="240"> |
 
-While you drag, the selection becomes a glass droplet:
+While you press or drag, the selection becomes a glass droplet:
 
 <p>
   <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/droplet_light.png" width="32%">
-  <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/droplet_dark.png" width="32%">
-  <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/droplet_icons.png" width="32%">
+  <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/droplet_hold_light.png" width="32%">
+  <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/droplet_hold_dark.png" width="32%">
 </p>
 
 ## Features

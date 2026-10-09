@@ -33,3 +33,4 @@ migrate_working_dir/
 # Large media only shown on GitHub / via raw URLs in the README.
 doc/demo.mp4
 doc/demo.webp
+.github/

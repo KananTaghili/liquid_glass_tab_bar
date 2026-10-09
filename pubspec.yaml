@@ -33,10 +33,10 @@ screenshots:
     path: doc/demo_bar.webp
   - description: The glass droplet while dragging (light).
     path: doc/droplet_light.png
-  - description: The glass droplet while dragging (dark).
-    path: doc/droplet_dark.png
-  - description: The glass droplet, icon-only bar.
-    path: doc/droplet_icons.png
+  - description: Press and hold — the droplet over one tab (light).
+    path: doc/droplet_hold_light.png
+  - description: Press and hold — the droplet over one tab (dark).
+    path: doc/droplet_hold_dark.png
   - description: Light mode with labels.
     path: doc/light_labels.png
   - description: Dark mode with labels.
