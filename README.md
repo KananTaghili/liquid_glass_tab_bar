@@ -76,6 +76,28 @@ LiquidGlassTabItem.builder(
 )
 ```
 
+### Icon-only items
+
+Leave out the label and give a `semanticLabel` for screen readers. A smaller
+capsule usually looks better without text:
+
+```dart
+LiquidGlassTabBar(
+  style: const LiquidGlassTabBarStyle(capsuleHeight: 44),
+  items: const [
+    LiquidGlassTabItem(icon: Icon(Icons.home_outlined), semanticLabel: 'Home'),
+    LiquidGlassTabItem(icon: Icon(Icons.search), semanticLabel: 'Search'),
+  ],
+  // ...
+)
+```
+
+### How many items?
+
+At least 2. There is no hard upper limit, but each item gets an equal share
+of the width, so 2–5 is recommended (the iOS guideline); with more, labels
+are truncated on narrow phones.
+
 ### Action items
 
 ```dart

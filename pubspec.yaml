@@ -4,9 +4,9 @@ description: >-
   capsule turns into a real refracting glass droplet while you press, drag or
   switch tabs. Works on iOS and Android (Impeller).
 version: 0.1.0-dev.1
-# TODO: fill in once the GitHub repository exists.
-# repository: https://github.com/<username>/liquid_glass_tab_bar
-# issue_tracker: https://github.com/<username>/liquid_glass_tab_bar/issues
+
+repository: https://github.com/KananTaghili/liquid_glass_tab_bar
+issue_tracker: https://github.com/KananTaghili/liquid_glass_tab_bar/issues
 
 topics:
   - navigation

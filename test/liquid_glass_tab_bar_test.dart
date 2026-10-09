@@ -33,7 +33,7 @@ void main() {
     await tester.pumpWidget(_app(index: 0, onTap: (_) {}));
     for (final item in _items) {
       // Each label is drawn twice (unselected + selected layer).
-      expect(find.text(item.label), findsNWidgets(2));
+      expect(find.text(item.label!), findsNWidgets(2));
     }
   });
 
@@ -82,6 +82,28 @@ void main() {
       _app(index: 1, onTap: (_) {}, brightness: Brightness.dark),
     );
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('icon-only items work', (tester) async {
+    int? tapped;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: LiquidGlassTabBar(
+            currentIndex: 0,
+            onTap: (i) => tapped = i,
+            items: const [
+              LiquidGlassTabItem(icon: Icon(Icons.home), semanticLabel: 'Home'),
+              LiquidGlassTabItem(icon: Icon(Icons.star), semanticLabel: 'Star'),
+            ],
+          ),
+        ),
+      ),
+    );
+    expect(find.byType(Text), findsNothing);
+    await tester.tap(find.byIcon(Icons.star).first);
+    await tester.pumpAndSettle();
+    expect(tapped, 1);
   });
 
   test('bar height follows the style', () {

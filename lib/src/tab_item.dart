@@ -11,14 +11,21 @@ import 'package:flutter/widgets.dart';
 ///    the ambient [IconTheme]).
 ///  * Use [LiquidGlassTabItem.builder] for icons that need the color passed in
 ///    explicitly, such as SVGs.
+///
+/// Leave [label] out for an icon-only item; then give a [semanticLabel] so
+/// screen readers can still announce it.
 @immutable
 class LiquidGlassTabItem {
   /// An item whose [icon] is colored through the ambient [IconTheme].
   const LiquidGlassTabItem({
     required Widget this.icon,
-    required this.label,
+    this.label,
     this.semanticLabel,
-  }) : iconBuilder = null;
+  })  : iconBuilder = null,
+        assert(
+          label != null || semanticLabel != null,
+          'An icon-only item needs a semanticLabel.',
+        );
 
   /// An item whose icon is built with the current color, e.g. for SVGs:
   ///
@@ -33,9 +40,13 @@ class LiquidGlassTabItem {
   /// ```
   const LiquidGlassTabItem.builder({
     required Widget Function(Color color) this.iconBuilder,
-    required this.label,
+    this.label,
     this.semanticLabel,
-  }) : icon = null;
+  })  : icon = null,
+        assert(
+          label != null || semanticLabel != null,
+          'An icon-only item needs a semanticLabel.',
+        );
 
   /// The icon, colored through [IconTheme].
   final Widget? icon;
@@ -43,8 +54,8 @@ class LiquidGlassTabItem {
   /// Builds the icon with the given color.
   final Widget Function(Color color)? iconBuilder;
 
-  /// The text shown under the icon.
-  final String label;
+  /// The text shown under the icon. `null` for an icon-only item.
+  final String? label;
 
   /// Optional label for screen readers. Defaults to [label].
   final String? semanticLabel;

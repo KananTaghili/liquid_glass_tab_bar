@@ -54,6 +54,10 @@ class LiquidGlassTabBar extends StatefulWidget {
         assert(currentIndex >= 0 && currentIndex < items.length);
 
   /// The destinations, left to right.
+  ///
+  /// At least two. There is no upper limit, but every item gets an equal
+  /// share of the width — 2 to 5 items is recommended (like iOS); with more,
+  /// labels get truncated on narrow phones.
   final List<LiquidGlassTabItem> items;
 
   /// Index of the selected item.
@@ -192,30 +196,33 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
       selected: index == widget.currentIndex,
       label: item.semanticLabel ?? item.label,
       excludeSemantics: true,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 1),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: _style.iconSize + 6,
-              child: Center(child: icon),
+      child: item.label == null
+          // Icon-only: centered in the capsule.
+          ? Center(child: icon)
+          : Padding(
+              padding: const EdgeInsets.symmetric(vertical: 1),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: _style.iconSize + 6,
+                    child: Center(child: icon),
+                  ),
+                  Text(
+                    item.label!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    // Same weight in both layers — only the color may differ, or the
+                    // two layers would not line up at the droplet's edge.
+                    style: const TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w500,
+                    ).merge(_style.labelStyle).copyWith(color: color),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              item.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              // Same weight in both layers — only the color may differ, or the
-              // two layers would not line up at the droplet's edge.
-              style: const TextStyle(
-                fontSize: 10.5,
-                fontWeight: FontWeight.w500,
-              ).merge(_style.labelStyle).copyWith(color: color),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
