@@ -1,0 +1,128 @@
+# liquid_glass_tab_bar
+
+An iOS 26 style floating **liquid glass** tab bar for Flutter.
+
+At rest the selected tab sits in a soft capsule. Press, drag along the bar or
+switch tabs and the capsule turns into a **real refracting glass droplet**: it
+stretches with the finger's speed, wobbles into place, bends the icons
+underneath, and the whole bar swells slightly — the way the native tab bar
+does on iOS 26.
+
+![Light and dark mode](doc/screenshot.png)
+
+## Features
+
+- Real refraction, chromatic edge and light via
+  [`liquid_glass_renderer`](https://pub.dev/packages/liquid_glass_renderer)
+  shaders — not just blur.
+- Droplet physics: velocity-based stretch, overshoot on arrival, grows while
+  pressed, shrinks back when the finger stops.
+- Drag to select: slide along the bar, release over a tab.
+- The selected color flows smoothly across icons as the droplet moves.
+- Light and dark mode tuned against the native iOS 26 bar.
+- Action items: intercept a tap (e.g. to open a sheet) without changing the
+  selection.
+- Works on iOS and Android.
+
+## Requirements
+
+- Flutter 3.32.4 or newer.
+- **Impeller** (the default renderer on iOS and Android). Web and desktop
+  are not supported yet.
+
+## Usage
+
+```dart
+import 'package:liquid_glass_tab_bar/liquid_glass_tab_bar.dart';
+
+Scaffold(
+  // Let the content scroll behind the glass.
+  extendBody: true,
+  body: pages[index],
+  bottomNavigationBar: LiquidGlassTabBar(
+    currentIndex: index,
+    onTap: (i) => setState(() => index = i),
+    items: const [
+      LiquidGlassTabItem(icon: Icon(Icons.home_outlined), label: 'Home'),
+      LiquidGlassTabItem(icon: Icon(Icons.search), label: 'Search'),
+      LiquidGlassTabItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+    ],
+  ),
+);
+```
+
+Keep the last list item above the bar:
+
+```dart
+ListView(
+  padding: EdgeInsets.only(bottom: LiquidGlassTabBar.heightOf(context)),
+  children: [...],
+);
+```
+
+### SVG or custom icons
+
+Items are drawn twice (unselected, and selected clipped to the droplet), so
+an icon must only differ by color. Use the builder for icons that take the
+color explicitly:
+
+```dart
+LiquidGlassTabItem.builder(
+  label: 'Home',
+  iconBuilder: (color) => SvgPicture.asset(
+    'assets/home.svg',
+    colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+  ),
+)
+```
+
+### Action items
+
+```dart
+LiquidGlassTabBar(
+  // ...
+  onTapIntercept: (i) {
+    if (i != 2) return false;
+    showModalBottomSheet(context: context, builder: (_) => const NewPost());
+    return true; // selection stays where it is
+  },
+)
+```
+
+### Colors and layout
+
+```dart
+LiquidGlassTabBar(
+  selectedColor: Colors.teal,         // default: ColorScheme.primary
+  unselectedColor: Colors.black87,    // default: iOS-like near black / gray
+  style: const LiquidGlassTabBarStyle(
+    capsuleHeight: 51,      // height of the selection capsule
+    capsuleInset: 4,        // gap around the resting capsule
+    horizontalMargin: 20,   // distance to the screen edges
+    iconSize: 26,
+    labelStyle: TextStyle(fontSize: 10.5),
+  ),
+  // ...
+)
+```
+
+## Notes
+
+- The glass effect samples what is behind the bar, so give it colorful
+  content to bend (use `extendBody: true`).
+- Android emulators render the shaders through a software / OpenGL path and
+  may show color fringes that real devices do not.
+- `liquid_glass_renderer` is still a pre-release (`0.2.0-dev`); its API may
+  change.
+
+## Credits
+
+- Glass rendering: [`liquid_glass_renderer`](https://pub.dev/packages/liquid_glass_renderer)
+  by Tim Lehmann / whynotmake.it (MIT).
+- The bar's glass material values were first tuned after
+  [`liquid_glass_bottom_nav`](https://pub.dev/packages/liquid_glass_bottom_nav)
+  (MIT).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
