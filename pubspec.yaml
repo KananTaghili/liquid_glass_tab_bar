@@ -1,18 +1,17 @@
 name: liquid_glass_tab_bar
 description: >-
-  An iOS 26 style floating "liquid glass" tab bar for Flutter. The selection
-  capsule turns into a real refracting glass droplet while you press, drag or
-  switch tabs. Works on iOS and Android (Impeller).
-version: 0.1.0-dev.1
+  iOS 26 liquid glass bottom navigation bar (tab bar, nav bar) for Flutter with a
+  real refracting glass droplet, drag to select and light/dark mode.
+version: 0.1.0-dev.2
 
 repository: https://github.com/KananTaghili/liquid_glass_tab_bar
 issue_tracker: https://github.com/KananTaghili/liquid_glass_tab_bar/issues
 
 topics:
-  - navigation
+  - bottom-navigation
+  - navigation-bar
   - tab-bar
   - liquid-glass
-  - ios
   - glassmorphism
 
 environment:
@@ -30,5 +29,13 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 screenshots:
-  - description: Liquid glass tab bar in light and dark mode.
-    path: doc/screenshot.png
+  - description: Droplet demo — tap, drag and press-and-hold.
+    path: doc/demo_bar.webp
+  - description: Light mode with labels.
+    path: doc/light_labels.png
+  - description: Dark mode with labels.
+    path: doc/dark_labels.png
+  - description: Light mode, icon-only.
+    path: doc/light_icons.png
+  - description: Dark mode, icon-only.
+    path: doc/dark_icons.png

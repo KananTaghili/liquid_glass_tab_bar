@@ -50,6 +50,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _index = 0;
+  bool _labels = true;
 
   static const _titles = ['Home', 'Favorites', 'Search', 'Profile'];
 
@@ -61,6 +62,13 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(_titles[_index]),
         actions: [
+          IconButton(
+            tooltip: 'Toggle labels',
+            icon: Icon(
+              _labels ? Icons.label_off_outlined : Icons.label_outline,
+            ),
+            onPressed: () => setState(() => _labels = !_labels),
+          ),
           IconButton(
             tooltip: 'Toggle theme',
             icon: Icon(widget.dark ? Icons.light_mode : Icons.dark_mode),
@@ -84,17 +92,22 @@ class _HomePageState extends State<HomePage> {
           );
           return true;
         },
-        items: const [
-          LiquidGlassTabItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-          LiquidGlassTabItem(
-            icon: Icon(Icons.favorite_border),
-            label: 'Favorites',
-          ),
-          LiquidGlassTabItem(icon: Icon(Icons.search), label: 'Search'),
-          LiquidGlassTabItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
+        // Icon-only bars look better with a smaller capsule.
+        style: _labels
+            ? const LiquidGlassTabBarStyle()
+            : const LiquidGlassTabBarStyle(capsuleHeight: 44),
+        items: [
+          for (final (i, icon) in const [
+            Icons.home_outlined,
+            Icons.favorite_border,
+            Icons.search,
+            Icons.person_outline,
+          ].indexed)
+            LiquidGlassTabItem(
+              icon: Icon(icon),
+              label: _labels ? _titles[i] : null,
+              semanticLabel: _titles[i],
+            ),
         ],
       ),
     );
@@ -110,6 +123,7 @@ class _ColorfulList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Colors.primaries;
+    final dark = Theme.of(context).brightness == Brightness.dark;
     return ListView.builder(
       // Keeps the last card above the bar.
       padding: EdgeInsets.fromLTRB(
@@ -127,7 +141,12 @@ class _ColorfulList extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
-              colors: [color.shade300, color.shade700],
+              colors: dark
+                  ? [
+                      Color.lerp(color.shade700, Colors.black, 0.45)!,
+                      Color.lerp(color.shade900, Colors.black, 0.6)!,
+                    ]
+                  : [color.shade300, color.shade700],
             ),
           ),
           alignment: Alignment.centerLeft,

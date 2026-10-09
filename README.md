@@ -1,6 +1,8 @@
 # liquid_glass_tab_bar
 
-An iOS 26 style floating **liquid glass** tab bar for Flutter.
+An iOS 26 style floating **liquid glass bottom navigation bar** for Flutter —
+a drop-in tab bar / nav bar / bottom menu for `Scaffold.bottomNavigationBar`
+that looks like Apple's Liquid Glass `UITabBar`.
 
 At rest the selected tab sits in a soft capsule. Press, drag along the bar or
 switch tabs and the capsule turns into a **real refracting glass droplet**: it
@@ -8,7 +10,11 @@ stretches with the finger's speed, wobbles into place, bends the icons
 underneath, and the whole bar swells slightly — the way the native tab bar
 does on iOS 26.
 
-![Light and dark mode](doc/screenshot.png)
+![Demo: the droplet follows the finger](https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/demo_bar.webp)
+
+| Light & dark, with and without labels | Full screen demo |
+| :---: | :---: |
+| <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/screenshot.png" width="380"> | <img src="https://raw.githubusercontent.com/KananTaghili/liquid_glass_tab_bar/main/doc/demo.webp" width="240"> |
 
 ## Features
 
@@ -29,6 +35,12 @@ does on iOS 26.
 - Flutter 3.32.4 or newer.
 - **Impeller** (the default renderer on iOS and Android). Web and desktop
   are not supported yet.
+
+## Install
+
+```sh
+flutter pub add liquid_glass_tab_bar
+```
 
 ## Usage
 
