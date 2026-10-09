@@ -14,6 +14,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Same version as local development, so the tools do not rewrite
+          # project files (that made the publish dry run fail).
+          flutter-version: 3.44.8
           cache: true
 
       - name: Install dependencies
@@ -33,6 +36,9 @@ jobs:
         run: |
           flutter pub get
           flutter analyze
+
+      - name: Show files changed by the tools
+        run: git status --short && git diff
 
       - name: Publish dry run
         run: flutter pub publish --dry-run

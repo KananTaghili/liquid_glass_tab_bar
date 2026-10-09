@@ -2,7 +2,7 @@ name: liquid_glass_tab_bar
 description: >-
   iOS 26 liquid glass bottom navigation bar (tab bar, nav bar) for Flutter with a
   real refracting glass droplet, drag to select and light/dark mode.
-version: 0.1.0-dev.4
+version: 0.1.0-dev.5
 
 repository: https://github.com/KananTaghili/liquid_glass_tab_bar
 issue_tracker: https://github.com/KananTaghili/liquid_glass_tab_bar/issues

@@ -77,6 +77,36 @@ void main() {
     expect(tapped, 2);
   });
 
+  testWidgets('pressing another item selects only on release', (
+    tester,
+  ) async {
+    int? tapped;
+    await tester.pumpWidget(_app(index: 0, onTap: (i) => tapped = i));
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.text('Profile').first),
+    );
+    await tester.pump(const Duration(milliseconds: 500));
+    // The droplet moves while the finger is down, the page does not change.
+    expect(tapped, isNull);
+    await gesture.up();
+    await tester.pumpAndSettle();
+    expect(tapped, 2);
+  });
+
+  testWidgets('pressing and sliding away does not select', (tester) async {
+    int? tapped;
+    await tester.pumpWidget(_app(index: 0, onTap: (i) => tapped = i));
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.text('Profile').first),
+    );
+    await tester.pump(const Duration(milliseconds: 100));
+    // Sliding up and away cancels the tap; no sideways movement → no select.
+    await gesture.moveBy(const Offset(0, -200));
+    await gesture.up();
+    await tester.pumpAndSettle();
+    expect(tapped, isNull);
+  });
+
   testWidgets('builds in dark mode', (tester) async {
     await tester.pumpWidget(
       _app(index: 1, onTap: (_) {}, brightness: Brightness.dark),

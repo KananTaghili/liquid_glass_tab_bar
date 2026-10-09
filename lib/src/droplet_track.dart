@@ -126,6 +126,20 @@ class _DropletTrackState extends State<DropletTrack>
   /// Droplet position during a drag; `null` when not dragging.
   double? _dragPos;
 
+  /// Item the droplet moved to on pointer DOWN, before the tap is confirmed.
+  /// The selection only changes when the finger is lifted over it; otherwise
+  /// the droplet returns to the selected item.
+  int? _preview;
+
+  /// Set when the tap of the current pointer was delivered.
+  bool _tapCommitted = false;
+
+  /// The drag started from a previewed item (see [_preview]).
+  bool _dragFromPreview = false;
+
+  /// The droplet really moved during the current drag.
+  bool _dragMoved = false;
+
   /// Stretch caused by drag speed (0..1). Rises instantly, decays smoothly.
   double _dragStretch = 0;
 
@@ -187,6 +201,12 @@ class _DropletTrackState extends State<DropletTrack>
     // `_dragStretch` is intentionally NOT reset here: it is multiplied by
     // `_moveAnim.value` which fades out smoothly; resetting caused a one-frame
     // jump on release.
+    // Longer jumps take a little longer: 380 ms to the neighbour, +60 ms per
+    // extra item — a fixed time made far jumps look rushed.
+    final distance = (_to - _from).abs();
+    _anim.duration = Duration(
+      milliseconds: (380 + 60 * (distance - 1)).clamp(380, 620).round(),
+    );
     _anim.forward(from: 0);
   }
 
@@ -201,13 +221,40 @@ class _DropletTrackState extends State<DropletTrack>
 
   void _handleTap(int slot) {
     _bump();
-    if (widget.onSlotTap?.call(slot) ?? false) return;
+    _tapCommitted = true;
+    final previewed = _preview == slot;
+    _preview = null;
+    if (widget.onSlotTap?.call(slot) ?? false) {
+      // An action item: the droplet goes back to the selected item.
+      if (_to.round() != widget.selectedSlot) _goTo(widget.selectedSlot);
+      return;
+    }
     if (slot != _to.round()) {
       _goTo(slot);
-    } else {
+    } else if (!previewed) {
       _pulseAnim.forward(from: 0);
     }
     widget.onSlotSelected(slot);
+  }
+
+  /// Pointer DOWN on another item: the droplet slides there right away, but
+  /// nothing is selected until the finger is lifted (like iOS 26).
+  void _startPreview(int slot) {
+    _tapCommitted = false;
+    _preview = null;
+    if (slot == _to.round()) return;
+    _preview = slot;
+    _bump();
+    _goTo(slot);
+  }
+
+  /// After the pointer is lifted: if no tap was delivered (the finger moved
+  /// away, the gesture was cancelled, ...) the previewed droplet returns.
+  void _settlePreview() {
+    if (!mounted || _tapCommitted || _dragPos != null) return;
+    if (_preview == null) return;
+    _preview = null;
+    if (_to.round() != widget.selectedSlot) _goTo(widget.selectedSlot);
   }
 
   void _endDrag() {
@@ -218,6 +265,13 @@ class _DropletTrackState extends State<DropletTrack>
     _moveAnim.reverse();
     _dragAnim.reverse();
     widget.onActiveChanged?.call(false);
+    // A "drag" that never moved sideways (the finger slid off the bar
+    // vertically and the tap was cancelled) must not select the previewed
+    // item — the droplet goes back.
+    if (_dragFromPreview && !_dragMoved) {
+      setState(() => _goTo(widget.selectedSlot));
+      return;
+    }
     final nearest = drag.round().clamp(0, widget.slotCount - 1);
     if (widget.onSlotTap?.call(nearest) ?? false) {
       setState(() => _goTo(widget.selectedSlot));
@@ -310,7 +364,13 @@ class _DropletTrackState extends State<DropletTrack>
         // The Listener sits outside the gesture arena so press-and-hold can be
         // tracked without competing with the tap / drag recognizers.
         return Listener(
-          onPointerDown: (_) {
+          onPointerDown: (e) {
+            _startPreview(
+              (e.localPosition.dx / slotW).floor().clamp(
+                    0,
+                    widget.slotCount - 1,
+                  ),
+            );
             _holdTimer?.cancel();
             _holdTimer = Timer(const Duration(milliseconds: 150), () {
               if (!mounted) return;
@@ -325,6 +385,9 @@ class _DropletTrackState extends State<DropletTrack>
               _dragAnim.reverse();
               _bump(const Duration(milliseconds: 150));
             }
+            // The tap (if any) is delivered later in this same event; check
+            // afterwards whether the preview has to be undone.
+            scheduleMicrotask(_settlePreview);
           },
           onPointerCancel: (_) {
             _holdTimer?.cancel();
@@ -332,10 +395,15 @@ class _DropletTrackState extends State<DropletTrack>
               _dragAnim.reverse();
               _bump(const Duration(milliseconds: 150));
             }
+            scheduleMicrotask(_settlePreview);
           },
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onHorizontalDragStart: (d) {
+              // The drag takes over; its release decides the selection.
+              _dragFromPreview = _preview != null;
+              _dragMoved = false;
+              _preview = null;
               _anim.stop();
               _dragAnim.forward();
               _bumpTimer?.cancel();
@@ -354,7 +422,10 @@ class _DropletTrackState extends State<DropletTrack>
               // Only REAL droplet movement counts — pushing against the last
               // item must not inflate the stretch.
               final moved = (next - prev).abs();
-              if (moved > 0) _noteMovement();
+              if (moved > 0) {
+                _dragMoved = true;
+                _noteMovement();
+              }
               // Speed from real time (slots/second), independent of frame
               // rate; dt is clamped so a pause does not fake a slow event.
               double dtSec = 1 / 60;

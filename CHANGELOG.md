@@ -1,3 +1,12 @@
+## 0.1.0-dev.5
+
+- Pressing another tab slides the droplet there right away; the selection
+  only changes when the finger is lifted over it (like iOS 26). Sliding the
+  finger off the bar cancels and the droplet returns.
+- Longer jumps between tabs animate a bit slower (380 ms + 60 ms per extra
+  tab).
+- CI pinned to Flutter 3.44.8.
+
 ## 0.1.0-dev.4
 
 - The droplet keeps its full size while the finger is down; it no longer
