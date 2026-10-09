@@ -1,3 +1,8 @@
+## 0.1.0-dev.4
+
+- The droplet keeps its full size while the finger is down; it no longer
+  shrinks when the finger stops moving (only the speed stretch eases out).
+
 ## 0.1.0-dev.3
 
 - Droplet screenshots (press-and-hold, light and dark).

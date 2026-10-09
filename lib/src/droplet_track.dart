@@ -91,8 +91,8 @@ class _DropletTrackState extends State<DropletTrack>
     duration: const Duration(milliseconds: 80),
   )..addListener(() => setState(() {}));
 
-  /// 0→1 while the droplet is MOVING; when the finger stops but stays down it
-  /// eases back to the "pressed" size. Fast forward, slow reverse.
+  /// 0→1 while the droplet is MOVING; when the finger stops the speed stretch
+  /// eases out with it. Fast forward, slow reverse.
   late final AnimationController _moveAnim = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 50),
@@ -243,7 +243,6 @@ class _DropletTrackState extends State<DropletTrack>
         final s = math.max(animStretch, _dragStretch * _moveAnim.value);
 
         final dragT = Curves.easeOut.transform(_dragAnim.value);
-        final moveT = Curves.easeOut.transform(_moveAnim.value);
         final pulseT = Curves.easeOut.transform(_pulseAnim.value);
         final press = math.max(dragT, pulseT);
 
@@ -259,10 +258,13 @@ class _DropletTrackState extends State<DropletTrack>
         final w = slotW + 2 * widget.maxOverhang;
         final h = widget.capsuleHeight;
 
-        // Droplet deformation: stretches horizontally and flattens while
-        // moving; grows while pressed and a bit more while moving.
-        final sx = (1 + 0.45 * s) * (1 + 0.12 * press + 0.10 * moveT);
-        final sy = (1 - 0.14 * s) * (1 + 0.21 * press + 0.12 * moveT);
+        // Droplet deformation: stretches horizontally and flattens with the
+        // finger's speed. While the finger is down it keeps one full size —
+        // it does NOT shrink when the finger stops; only the stretch eases
+        // out. A tap pulse grows it a little less.
+        final grow = math.max(dragT, 0.55 * pulseT);
+        final sx = (1 + 0.45 * s) * (1 + 0.232 * grow);
+        final sy = (1 - 0.14 * s) * (1 + 0.355 * grow);
 
         // Clamp by the STRETCHED width so a stretched droplet pushes against
         // the bar's end instead of sliding out of it. As glass it may stick
