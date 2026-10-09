@@ -1,3 +1,8 @@
+## 0.1.0-dev.3
+
+- Droplet screenshots (press-and-hold, light and dark).
+- CI workflow (format, analyze, test, publish dry run).
+
 ## 0.1.0-dev.2
 
 - Shorter package description; more search topics.
