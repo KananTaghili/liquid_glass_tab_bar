@@ -147,9 +147,10 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
               Positioned.fill(child: GlassSurface(radius: barRadius)),
               Padding(
                 // Equal gap on all four sides of the resting capsule: the
-                // capsule sticks out of the row by `inset` on each end.
+                // capsule sticks out of the row by `capsuleOverhang` on each
+                // end and still stops `inset` short of the bar edge.
                 padding: EdgeInsets.symmetric(
-                  horizontal: 2 * inset,
+                  horizontal: inset + _style.capsuleOverhang,
                   vertical: inset,
                 ),
                 child: SizedBox(
@@ -161,7 +162,7 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
                     onSlotTap: widget.onTapIntercept,
                     onActiveChanged: (v) => setState(() => _active = v),
                     capsuleHeight: _style.capsuleHeight,
-                    maxOverhang: inset,
+                    maxOverhang: _style.capsuleOverhang,
                     indicatorBuilder: _lens,
                     indicatorBelowBuilder: _restCapsule,
                     itemBuilder: _item,

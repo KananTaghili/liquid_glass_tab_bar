@@ -136,10 +136,11 @@ LiquidGlassTabBar(
 ```dart
 LiquidGlassTabBar(
   selectedColor: Colors.teal,         // default: ColorScheme.primary
-  unselectedColor: Colors.black87,    // default: iOS-like near black / gray
+  unselectedColor: Colors.black87,    // default: iOS-like near black / near white
   style: const LiquidGlassTabBarStyle(
     capsuleHeight: 54,      // height of the selection capsule
     capsuleInset: 4,        // gap around the resting capsule
+    capsuleOverhang: 6,     // how far the capsule reaches past its item
     horizontalMargin: 20,   // distance to the screen edges
     iconSize: 26,
     labelStyle: TextStyle(fontSize: 10.5),

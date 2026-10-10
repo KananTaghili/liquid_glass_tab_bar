@@ -1,3 +1,9 @@
+## 0.1.0-dev.7
+
+- The resting capsule is as wide as on iOS 26: it reaches 6 past its item on
+  each side (was 4) and the items move inwards to make room. New style option
+  `capsuleOverhang`.
+
 ## 0.1.0-dev.6
 
 - Long jumps between tabs are slower still (380 ms + 160 ms per extra tab).

@@ -9,6 +9,7 @@ class LiquidGlassTabBarStyle {
   const LiquidGlassTabBarStyle({
     this.capsuleHeight = 54,
     this.capsuleInset = 4,
+    this.capsuleOverhang = 6,
     this.horizontalMargin = 20,
     this.bottomGap,
     this.iconSize = 26,
@@ -22,6 +23,12 @@ class LiquidGlassTabBarStyle {
   /// Gap between the resting capsule and the edge of the bar, the same on all
   /// four sides.
   final double capsuleInset;
+
+  /// How far the resting capsule reaches past its item on the left and the
+  /// right, so it is wider than the item slot like on iOS 26. The items are
+  /// moved inwards by the same amount, so the gap to the bar edge stays
+  /// [capsuleInset].
+  final double capsuleOverhang;
 
   /// Distance between the bar and the left/right edges of the screen.
   final double horizontalMargin;
