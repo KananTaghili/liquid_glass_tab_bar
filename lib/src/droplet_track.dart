@@ -29,6 +29,7 @@ class DropletTrack extends StatefulWidget {
     this.indicatorBelowBuilder,
     this.onSlotTap,
     this.maxOverhang = 0,
+    this.minGlassHeight = 0,
     this.onActiveChanged,
   });
 
@@ -68,6 +69,10 @@ class DropletTrack extends StatefulWidget {
   /// How far the capsule may stick out of the row on the first / last item,
   /// so it sits concentric with the rounded ends of the bar.
   final double maxOverhang;
+
+  /// The glass droplet is never shorter than this while it moves or is held
+  /// (usually the bar's height), even when fast movement flattens it.
+  final double minGlassHeight;
 
   /// `true` while the user interacts (drag, hold, briefly after a tap) — the
   /// bar uses it to grow slightly.
@@ -320,10 +325,14 @@ class _DropletTrackState extends State<DropletTrack>
         // it does NOT shrink when the finger stops; only the stretch eases
         // out. A tap pulse grows it a little less.
         final grow = math.max(dragT, 0.55 * pulseT);
-        final sx = (1 + 0.45 * s) * (1 + 0.232 * grow);
+        // 0.36 (was 0.45): a fast drag stretched the droplet too far.
+        final sx = (1 + 0.36 * s) * (1 + 0.232 * grow);
         // 0.28: with the 54 high capsule this keeps the held droplet as tall
-        // as before (about 69); 0.355 made it stick out too far.
-        final sy = (1 - 0.14 * s) * (1 + 0.28 * grow);
+        // as before (about 69); 0.355 made it stick out too far. As glass it
+        // never gets shorter than [minGlassHeight].
+        final minSy =
+            1 + (math.max(widget.minGlassHeight / h, 1.0) - 1) * glass;
+        final sy = math.max((1 - 0.14 * s) * (1 + 0.28 * grow), minSy);
 
         // Clamp by the STRETCHED width so a stretched droplet pushes against
         // the bar's end instead of sliding out of it. As glass it may stick

@@ -1,3 +1,9 @@
+## 0.1.0-dev.10
+
+- While it moves, the glass droplet is never shorter than the bar (fast
+  movement used to flatten it below the bar's height).
+- A fast drag stretches the droplet a little less (0.45 → 0.36).
+
 ## 0.1.0-dev.9
 
 - The held droplet is less tall: it grew with the taller capsule of dev.6

@@ -163,6 +163,7 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
                     onActiveChanged: (v) => setState(() => _active = v),
                     capsuleHeight: _style.capsuleHeight,
                     maxOverhang: _style.capsuleOverhang,
+                    minGlassHeight: _style.barHeight,
                     indicatorBuilder: _lens,
                     indicatorBelowBuilder: _restCapsule,
                     itemBuilder: _item,
