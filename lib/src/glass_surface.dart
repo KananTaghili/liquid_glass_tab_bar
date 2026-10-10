@@ -29,21 +29,28 @@ class GlassSurface extends StatelessWidget {
             side: BorderSide(
               color: dark
                   ? Colors.white.withValues(alpha: 0.02)
-                  : Colors.white.withValues(alpha: 0.41),
+                  : Colors.white.withValues(alpha: 0.5),
             ),
           ),
         ),
         child: lgr.LiquidGlass.withOwnLayer(
           shape: shape,
           settings: lgr.LiquidGlassSettings(
+            // Dark mode dims what is behind the bar like iOS 26 does; the
+            // old near-clear glass turned a green button behind it neon.
             glassColor: dark
-                ? Colors.white.withValues(alpha: 0.03)
-                : Colors.white.withValues(alpha: 0.57),
+                ? Colors.black.withValues(alpha: 0.35)
+                // 0.68: the shader boosts saturation AFTER tinting, so with
+                // less white a colourful widget behind the bar looked darker
+                // and more saturated than on iOS 26.
+                : Colors.white.withValues(alpha: 0.68),
             // Wide edge refraction band — the "iOS 26" look on a large panel.
             thickness: 32,
             // Light frost: content behind is recognisable as silhouettes.
             blur: 5,
-            saturation: 1.8,
+            // The shader boosts saturation after tinting; on a dark bar 1.8
+            // makes colourful content glow.
+            saturation: dark ? 1.0 : 1.8,
             lightIntensity: dark ? 0.05 : 1.0,
             ambientStrength: 0.2,
           ),
@@ -51,7 +58,9 @@ class GlassSurface extends StatelessWidget {
               // On black the native bar is dark gray, not black.
               ? DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.045),
+                    // Also makes up for the dark tint, which no longer
+                    // lightens the glass on black.
+                    color: Colors.white.withValues(alpha: 0.074),
                     borderRadius: BorderRadius.circular(radius),
                   ),
                   child: const SizedBox.expand(),

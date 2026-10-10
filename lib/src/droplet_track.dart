@@ -289,9 +289,12 @@ class _DropletTrackState extends State<DropletTrack>
         final slotW = box.maxWidth / widget.slotCount;
 
         // Stretch: a sine that peaks mid-way during a tap animation (longer
-        // jumps stretch more), or the finger speed while dragging.
+        // jumps stretch more, at most 65% of a fast drag so a long jump does
+        // not turn the capsule into a long bar), or the finger speed while
+        // dragging.
         final animStretch = _anim.isAnimating
-            ? math.sin(math.pi * _anim.value.clamp(0.0, 1.0)) *
+            ? 0.65 *
+                math.sin(math.pi * _anim.value.clamp(0.0, 1.0)) *
                 ((_to - _from).abs() / 2).clamp(0.0, 1.0)
             : 0.0;
         final s = math.max(animStretch, _dragStretch * _moveAnim.value);

@@ -234,8 +234,11 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
     final fade = 1 - glass;
     return DecoratedBox(
       decoration: BoxDecoration(
+        // Gray at 25% rather than white at 14%: the same gray on black, but
+        // it does not wash out colourful content behind the bar, so the
+        // selected color stays readable on top of it.
         color: dark
-            ? Colors.white.withValues(alpha: 0.14 * fade)
+            ? const Color(0xFF909090).withValues(alpha: 0.25 * fade)
             : Colors.black.withValues(alpha: 0.05 * fade),
         borderRadius: BorderRadius.circular(_style.capsuleHeight / 2),
         // No border: in light mode the shadow draws the edge, in dark mode the

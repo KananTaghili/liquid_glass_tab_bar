@@ -1,3 +1,14 @@
+## 0.1.0-dev.8
+
+- Light mode: the bar glass is a little whiter, so colourful content behind
+  it is tinted like on iOS 26 instead of darker and more saturated.
+- Dark mode: the bar dims colourful content behind it like iOS 26 (it used to
+  glow).
+- Dark mode: the resting capsule no longer washes out colourful content
+  behind it, so the selected item stays readable.
+- Tapping a far tab stretches the capsule less on the way (65% of the
+  previous stretch).
+
 ## 0.1.0-dev.7
 
 - The resting capsule is as wide as on iOS 26: it reaches 6 past its item on
