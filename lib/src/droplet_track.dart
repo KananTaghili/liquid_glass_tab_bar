@@ -321,7 +321,9 @@ class _DropletTrackState extends State<DropletTrack>
         // out. A tap pulse grows it a little less.
         final grow = math.max(dragT, 0.55 * pulseT);
         final sx = (1 + 0.45 * s) * (1 + 0.232 * grow);
-        final sy = (1 - 0.14 * s) * (1 + 0.355 * grow);
+        // 0.28: with the 54 high capsule this keeps the held droplet as tall
+        // as before (about 69); 0.355 made it stick out too far.
+        final sy = (1 - 0.14 * s) * (1 + 0.28 * grow);
 
         // Clamp by the STRETCHED width so a stretched droplet pushes against
         // the bar's end instead of sliding out of it. As glass it may stick

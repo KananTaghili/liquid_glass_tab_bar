@@ -1,3 +1,8 @@
+## 0.1.0-dev.9
+
+- The held droplet is less tall: it grew with the taller capsule of dev.6
+  and stuck out of the bar too far.
+
 ## 0.1.0-dev.8
 
 - Light mode: the bar glass is a little whiter, so colourful content behind
