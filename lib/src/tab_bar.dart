@@ -77,7 +77,7 @@ class LiquidGlassTabBar extends StatefulWidget {
   final Color? selectedColor;
 
   /// Color of the other icons and labels. Defaults to near-black in light
-  /// mode and a light gray in dark mode, like iOS 26.
+  /// mode and near-white in dark mode, like iOS 26.
   final Color? unselectedColor;
 
   /// Layout values.
@@ -180,7 +180,7 @@ class _LiquidGlassTabBarState extends State<LiquidGlassTabBar> {
     final dark = theme.brightness == Brightness.dark;
     final selected = widget.selectedColor ?? theme.colorScheme.primary;
     final unselected = widget.unselectedColor ??
-        (dark ? const Color(0xFFA9AFAD) : const Color(0xFF1C1C1E));
+        (dark ? const Color(0xE6FFFFFF) : const Color(0xFF1C1C1E));
     final color = active ? selected : unselected;
     final item = widget.items[index];
 

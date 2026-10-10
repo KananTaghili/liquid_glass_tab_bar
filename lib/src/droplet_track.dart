@@ -201,11 +201,11 @@ class _DropletTrackState extends State<DropletTrack>
     // `_dragStretch` is intentionally NOT reset here: it is multiplied by
     // `_moveAnim.value` which fades out smoothly; resetting caused a one-frame
     // jump on release.
-    // Longer jumps take a little longer: 380 ms to the neighbour, +60 ms per
+    // Longer jumps take a little longer: 380 ms to the neighbour, +160 ms per
     // extra item — a fixed time made far jumps look rushed.
     final distance = (_to - _from).abs();
     _anim.duration = Duration(
-      milliseconds: (380 + 60 * (distance - 1)).clamp(380, 620).round(),
+      milliseconds: (380 + 160 * (distance - 1)).clamp(380, 860).round(),
     );
     _anim.forward(from: 0);
   }

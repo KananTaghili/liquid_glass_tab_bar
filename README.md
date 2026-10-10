@@ -138,7 +138,7 @@ LiquidGlassTabBar(
   selectedColor: Colors.teal,         // default: ColorScheme.primary
   unselectedColor: Colors.black87,    // default: iOS-like near black / gray
   style: const LiquidGlassTabBarStyle(
-    capsuleHeight: 51,      // height of the selection capsule
+    capsuleHeight: 54,      // height of the selection capsule
     capsuleInset: 4,        // gap around the resting capsule
     horizontalMargin: 20,   // distance to the screen edges
     iconSize: 26,

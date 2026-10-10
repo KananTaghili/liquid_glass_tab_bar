@@ -1,3 +1,11 @@
+## 0.1.0-dev.6
+
+- Long jumps between tabs are slower still (380 ms + 160 ms per extra tab).
+- Default bar height matches the native iOS 26 tab bar (capsuleHeight
+  51 → 54).
+- Dark mode: unselected icons and labels are near-white (was gray), like
+  iOS 26.
+
 ## 0.1.0-dev.5
 
 - Pressing another tab slides the droplet there right away; the selection

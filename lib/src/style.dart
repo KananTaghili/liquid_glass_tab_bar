@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 class LiquidGlassTabBarStyle {
   /// Creates a style. All values are in logical pixels.
   const LiquidGlassTabBarStyle({
-    this.capsuleHeight = 51,
+    this.capsuleHeight = 54,
     this.capsuleInset = 4,
     this.horizontalMargin = 20,
     this.bottomGap,
